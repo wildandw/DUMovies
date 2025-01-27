@@ -7,7 +7,7 @@ const db = mysql.createPool({
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'movierecommendation', // Default ke 'movierecommendation' jika DB_NAME kosong
-  port:3306
+  port: process.env.DB_PORT || 3306,
 });
 
 // Menggunakan async/await saat memanggil query
