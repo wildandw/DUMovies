@@ -51,6 +51,11 @@ router.post('/register', async (req, res) => {
         return res.status(400).json({ message: 'Username, email, and password are required' });
     }
 
+    // Validasi panjang password minimal 6 karakter
+    if (password.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+    }
+
     try {
         const existingUser = await getUserByUsername(username);
         const existingEmail = await getUserByEmail(email);
@@ -65,6 +70,7 @@ router.post('/register', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 /**
  * @swagger
@@ -220,6 +226,11 @@ router.post('/reset-password', async (req, res) => {
     const { email, otp, newPassword } = req.body;
     if (!email || !otp || !newPassword) return res.status(400).json({ message: 'All fields are required' });
 
+    // Validasi panjang password minimal 6 karakter
+    if (newPassword.length < 6) {
+        return res.status(400).json({ message: 'New password must be at least 6 characters long' });
+    }
+
     try {
         const isValidOTP = await verifyOTP(email, otp);
         if (!isValidOTP) return res.status(400).json({ message: 'Invalid or expired OTP' });
@@ -233,5 +244,6 @@ router.post('/reset-password', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 module.exports = router;
